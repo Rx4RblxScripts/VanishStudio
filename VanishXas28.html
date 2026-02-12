@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VanishStudiosKey Generator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: linear-gradient(270deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background-size: 600% 600%;
+  animation: bgMove 10s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.box {
+  background: rgba(0,0,0,0.75);
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  width: 350px;
+  box-shadow: 0 0 25px #000;
+  animation: pop 1s ease;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+h1 {
+  color: #fff;
+  margin-bottom: 25px;
+}
+
+.input-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 13px;
+  outline: none;
+}
+
+button {
+  padding: 12px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #00ffcc;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #00ccaa;
+  transform: scale(1.05);
+}
+
+button:disabled {
+  background: gray;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.generate-btn {
+  width: 100%;
+  margin-top: 10px;
+  background: #ffcc00;
+}
+
+.generate-btn:hover {
+  background: #e6b800;
+}
+
+.msg {
+  margin-top: 15px;
+  color: #00ffcc;
+  font-size: 14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <h1>VanishStudioKey</h1>
+
+  <div class="input-box">
+
+    <input
+      type="text"
+      id="keyBox"
+      placeholder="Click Generate..."
+      readonly
+    >
+
+    <button onclick="copyKey()">Copy</button>
+
+  </div>
+
+  <button
+    class="generate-btn"
+    id="genBtn"
+    onclick="generateKey()"
+  >
+    Generate Key
+  </button>
+
+  <div class="msg" id="msg"></div>
+
+</div>
+
+
+<script>
+
+// Your keys
+const keys = [
+
+  "VanishKey - A01A011 - 2110A - A1AX",
+  "VanishKey - A02A011 - 2120A - B2AX",
+  "VanishKey - A03A011 - 2130A - C3AX",
+  "VanishKey - A04A011 - 2140A - D4AX",
+  "VanishKey - A05A011 - 2150A - E5AX",
+  "VanishKey - A06A011 - 2160A - F6AX",
+  "VanishKey - A07A011 - 2170A - G7AX",
+  "VanishKey - A08A011 - 2180A - H8AX",
+  "VanishKey - A09A011 - 2190A - I9AX",
+  "VanishKey - A10A011 - 2110A - J0AX",
+
+  "VanishKey - B01A011 - 2110B - A1BX",
+  "VanishKey - B02A011 - 2120B - B2BX",
+  "VanishKey - B03A011 - 2130B - C3BX",
+  "VanishKey - B04A011 - 2140B - D4BX",
+  "VanishKey - B05A011 - 2150B - E5BX",
+  "VanishKey - B06A011 - 2160B - F6BX",
+  "VanishKey - B07A011 - 2170B - G7BX",
+  "VanishKey - B08A011 - 2180B - H8BX",
+  "VanishKey - B09A011 - 2190B - I9BX",
+  "VanishKey - B10A011 - 2110B - J0BX",
+
+  "VanishKey - C01A011 - 3110C - 1KCP",
+  "VanishKey - C02A011 - 3210C - 2LCP",
+  "VanishKey - C03A011 - 3310C - 3MCP",
+  "VanishKey - C04A011 - 3410C - 4NCP",
+  "VanishKey - C05A011 - 3510C - 5OCP",
+  "VanishKey - C06A011 - 3610C - 6PCP",
+  "VanishKey - C07A011 - 3710C - 7QCP",
+  "VanishKey - C08A011 - 3810C - 8RCP",
+  "VanishKey - C09A011 - 3910C - 9SCP",
+  "VanishKey - C10A011 - 31010C - 10TCP",
+
+  "VanishKey - D01B021 - 3120D - 1KDP",
+  "VanishKey - D02B021 - 3220D - 2LDP",
+  "VanishKey - D03B021 - 3320D - 3MDP",
+  "VanishKey - D04B021 - 3420D - 4NDP",
+  "VanishKey - D05B021 - 3520D - 5ODP",
+  "VanishKey - D06B021 - 3620D - 6PDP",
+  "VanishKey - D07B021 - 3720D - 7QDP",
+  "VanishKey - D08B021 - 3820D - 8RDP",
+  "VanishKey - D09B021 - 3920D - 9SDP",
+  "VanishKey - D10B021 - 31020D - 10TDP"
+];
+
+
+// Copy
+function copyKey() {
+
+  let box = document.getElementById("keyBox");
+  let msg = document.getElementById("msg");
+
+  if (box.value === "") {
+    msg.textContent = "Generate a key first!";
+    return;
+  }
+
+  navigator.clipboard.writeText(box.value);
+
+  msg.textContent = "Copied!";
+}
+
+
+// Generate
+function generateKey() {
+
+  let box = document.getElementById("keyBox");
+  let btn = document.getElementById("genBtn");
+  let msg = document.getElementById("msg");
+
+  let random = Math.floor(Math.random() * keys.length);
+
+  box.value = keys[random];
+
+  // Disable button after one click
+  btn.disabled = true;
+  btn.textContent = "Used";
+
+  msg.textContent = "Key generated!";
+}
+
+</script>
+
+</body>
+</html>

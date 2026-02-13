@@ -1,0 +1,413 @@
+My Loader
+
+
+
+local Players = game:GetService("Players")
+local MarketplaceService = game:GetService("MarketplaceService")
+local HttpService = game:GetService("HttpService")
+local LocalPlayer = Players.LocalPlayer
+
+-- ╔═══════════════════════
+-- ║     BLACKLIST
+-- ╚═══════════════════════
+local Blacklist = {
+    ["pahila_destroyer"] = true,
+    [""], = true,
+    [""], = true,
+    ["
+    ["
+    ["
+}
+
+-- Message shown when kicked
+local BlacklistKickMessage = "You Are BlackListed From Using This Script Again!"
+
+-- Check if current player is blacklisted (case-insensitive)
+local function isBlacklisted()
+    local nameLower = LocalPlayer.Name:lower()
+    for blacklistedName in pairs(Blacklist) do
+        if nameLower == blacklistedName:lower() then
+            return true
+        end
+    end
+    return false
+end
+
+-- Immediate blacklist check at start
+if isBlacklisted() then
+    task.wait(0.5)  -- small delay to let GUI appear briefly if you want
+    LocalPlayer:Kick(BlacklistKickMessage)
+    return  -- stop the entire script
+end
+
+-- ╔═══════════════════════
+-- ║     YOUR ORIGINAL CODE BELOW
+-- ╚═══════════════════════
+
+local VALID_KEYS = {
+    ["VanishKey-A01A011-2110A-A1AX"], =  true
+    ["VanishKey-A02A011-2120A-B2AX"], =  true
+    ["VanishKey-A03A011-2130A-C3AX"], =  true
+    ["VanishKey-A04A011-2140A-D4AX"], =  true
+    ["VanishKey-A05A011-2150A-E5AX"], =  true
+    ["VanishKey-A06A011-2160A-F6AX"], =  true
+    ["VanishKey-A07A011-2170A-G7AX"], =  true
+    ["VanishKey-A08A011-2180A-H8AX"], =  true
+    ["VanishKey-A09A011-2190A-I9AX"], =  true
+    ["VanishKey-A10A011-2110A-J0AX"], =  true
+    ["VanishKey-B01A011-2110B-A1BX"], =  true
+    ["VanishKey-B02A011-2120B-B2BX"], =  true
+    ["VanishKey-B03A011-2130B-C3BX"], =  true
+    ["VanishKey-B04A011-2140B-D4BX"], =  true
+    ["VanishKey-B05A011-2150B-E5BX"], =  true
+    ["VanishKey-B06A011-2160B-F6BX"], =  true
+    ["VanishKey-B07A011-2170B-G7BX"], =  true
+    ["VanishKey-B08A011-2180B-H8BX"], =  true
+    ["VanishKey-B09A011-2190B-I9BX"], =  true
+    ["VanishKey-B10A011-2110B-J0BX"], =  true
+    ["VanishKey-C01A011-3110C-1KCP"], =  true
+    ["VanishKey-C02A011-3210C-2LCP"], =  true
+    ["VanishKey-C03A011-3310C-3MCP"], =  true
+    ["VanishKey-C04A011-3410C-4NCP"], =  true
+    ["VanishKey-C05A011-3510C-5OCP"], =  true
+    ["VanishKey-C06A011-3610C-6PCP"], =  true
+    ["VanishKey-C07A011-3710C-7QCP"], =  true
+    ["VanishKey-C08A011-3810C-8RCP"], =  true
+    ["VanishKey-C09A011-3910C-9SCP"], =  true
+    ["VanishKey-C10A011-31010C-10TCP"], =  true
+    ["VanishKey-D01B021-3120D-1KDP"], =  true
+    ["VanishKey-D02B021-3220D-2LDP"], =  true
+    ["VanishKey-D03B021-3320D-3MDP"], =  true
+    ["VanishKey-D04B021-3420D-4NDP"], =  true
+    ["VanishKey-D05B021-3520D-5ODP"], =  true
+    ["VanishKey-D06B021-3620D-6PDP"], =  true
+    ["VanishKey-D07B021-3720D-7QDP"], = true
+    ["VanishKey-D08B021-3820D-8RDP"], = true
+    ["VanishKey-D09B021-3920D-9SDP"], = true
+    ["VanishKey-D10B021-31020D-10TDP"], = true
+    ["VanishStudioPremiumKey-LifeTime"], = true
+ }
+
+--// WEBHOOK SETTINGS
+local WEBHOOK_URL = "https://discord.com/api/webhooks/1455121444760453151/CP4l97hX7pIhGRZFB977f6OL6Pez_XIzmBm5Hb1960DotxlwfZMx2iiUMZSI5ohwAXAX"
+local httpreq = (syn and syn.request) or request or http_request or (http and http.request)
+if not httpreq then return end
+
+local Executor =
+	syn and "Synapse X"
+	or KRNL_LOADED and "KRNL"
+	or identifyexecutor and identifyexecutor()
+	or "Unknown"
+
+local HWID =
+	(syn and syn.get_executor_hwid and syn.get_executor_hwid())
+	or (KRNL_LOADED and KRNL and KRNL.GetHWID and KRNL.GetHWID())
+	or "Unknown"
+
+local AccountAge = LocalPlayer.AccountAge .. " days"
+local AVATAR_URL = "https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=" .. LocalPlayer.UserId .. "&size=420x420&format=Png&isCircular=false"
+
+--// CHARACTER CHECKS
+local function hasHeadless(character)
+	local head = character:FindFirstChild("Head")
+	if not head then return true end
+	if head.Transparency == 1 and not head:FindFirstChildOfClass("Decal") then
+		return true
+	end
+	return false
+end
+
+local function hasKorblox(character)
+	for _, v in ipairs(character:GetDescendants()) do
+		if v:IsA("SpecialMesh") or v:IsA("MeshPart") then
+			if string.find(string.lower(v.Name), "korblox") then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local HasHeadless = hasHeadless(Character) and "✅ Yes" or "❌ No"
+local HasKorblox = hasKorblox(Character) and "✅ Yes" or "❌ No"
+
+--// SUPPORTED GAMES
+local supportedGameScripts = {
+	["Arsenal"] = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/chadreypagoboa-collab/Arsenal/refs/heads/main/Arsenal"))()
+	end,
+	["Aftermath"] = function()
+		print("Aftermath script loaded")
+	end,
+	["Apocalypse Rising"] = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/chadreypagoboa-collab/Apocalypse-Rising/refs/heads/main/Apocalypse%20Rising"))()
+	end,
+	["Rivals"] = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/chadreypagoboa-collab/Rivals/refs/heads/main/Rivals"))()
+	end,
+    ["Counter Blox"] = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/chadreypagoboa-collab/Counter-Blox/refs/heads/main/Counter%20Blox"))()
+	end,
+	["Project Delta"] = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/chadreypagoboa-collab/Project-Delta/refs/heads/main/Project%20Delta"))()
+	end,
+	["Universal"] = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/chadreypagoboa-collab/Universal/refs/heads/main/Universal"))()
+	end
+}
+
+local placeGameMap = {
+	[286090429] = "Arsenal",
+	[7336302630] = "Project Delta",
+	[301549746] = "Counter Blox",
+	[15327728308] = "Aftermath",
+	[863266079] = "Apocalypse Rising",
+	[17625359962] = "Rivals"
+}
+
+--// EXECUTION COUNTER
+local ExecutionCount = 0
+
+--// WEBHOOK FUNCTION
+local startTime = tick()
+local function sendWebhook(keyUsed)
+	ExecutionCount += 1
+
+	local gameName = "Unknown"
+	pcall(function()
+		gameName = MarketplaceService:GetProductInfo(game.PlaceId).Name
+	end)
+
+	local currentTime = tick()
+	local sessionSeconds = currentTime - startTime
+	local sessionMinutes = math.floor(sessionSeconds / 60)
+	local sessionHours = math.floor(sessionMinutes / 60)
+	local remainingMinutes = sessionMinutes % 60
+	local sessionTimeStr = sessionHours .. "h " .. remainingMinutes .. "m"
+
+	local payload = {
+		username = "VanishStudios (Atoms) Logs",
+		embeds = { {
+			title = "✅ Script Executed",
+			color = 1127128,
+			thumbnail = { url = AVATAR_URL },
+			fields = {
+				{ name = "Player", value = LocalPlayer.Name, inline = true },
+				{ name = "Account Age", value = AccountAge, inline = true },
+				{ name = "Executor", value = Executor, inline = true },
+				{ name = "HWID", value = HWID },
+				{ name = "Game", value = gameName },
+				{ name = "Key Used", value = keyUsed },
+				{ name = "Headless", value = HasHeadless, inline = true },
+				{ name = "Korblox", value = HasKorblox, inline = true },
+				{ name = "Execution Count", value = tostring(ExecutionCount), inline = true },
+				{ name = "Date Used", value = os.date("%Y-%m-%d %H:%M:%S"), inline = true },
+				{ name = "Session Duration", value = sessionTimeStr, inline = true },
+			},
+			footer = { text = "Roblox Key System" },
+			timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
+		} }
+	}
+
+	pcall(function()
+		httpreq({
+			Url = WEBHOOK_URL,
+			Method = "POST",
+			Headers = { ["Content-Type"] = "application/json" },
+			Body = HttpService:JSONEncode(payload)
+		})
+	end)
+end
+
+--// NOTIFICATION FUNCTION (unchanged)
+local function sendNotification(title, text, isSuccess)
+	local ScreenGui = Instance.new("ScreenGui")
+	ScreenGui.Name = "XploitLog"
+	ScreenGui.ResetOnSpawn = false
+	ScreenGui.Parent = game.CoreGui
+
+	local Frame = Instance.new("Frame", ScreenGui)
+	Frame.Size = UDim2.new(0, 300, 0, 80)
+	Frame.Position = UDim2.new(1, -320, 0, 50)
+	Frame.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+	Frame.BorderSizePixel = 0
+	Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 12)
+
+	local Gradient = Instance.new("UIGradient", Frame)
+	if isSuccess then
+		Gradient.Color = ColorSequence.new{
+			ColorSequenceKeypoint.new(0, Color3.fromRGB(0,255,128)),
+			ColorSequenceKeypoint.new(1, Color3.fromRGB(0,128,255))
+		}
+	else
+		Gradient.Color = ColorSequence.new{
+			ColorSequenceKeypoint.new(0, Color3.fromRGB(255,0,0)),
+			ColorSequenceKeypoint.new(1, Color3.fromRGB(255,128,0))
+		}
+	end
+	Gradient.Rotation = 0
+
+	spawn(function()
+		while Frame.Parent do
+			for i = 0, 360, 2 do
+				Gradient.Rotation = i
+				task.wait(0.02)
+			end
+		end
+	end)
+
+	local TitleLabel = Instance.new("TextLabel", Frame)
+	TitleLabel.Size = UDim2.new(1, -20, 0, 30)
+	TitleLabel.Position = UDim2.new(0, 10, 0, 5)
+	TitleLabel.BackgroundTransparency = 1
+	TitleLabel.Text = title
+	TitleLabel.Font = Enum.Font.GothamBold
+	TitleLabel.TextSize = 19
+	TitleLabel.TextColor3 = Color3.new(1,1,1)
+	TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+	local TextLabel = Instance.new("TextLabel", Frame)
+	TextLabel.Size = UDim2.new(1, -20, 0, 40)
+	TextLabel.Position = UDim2.new(0, 10, 0, 35)
+	TextLabel.BackgroundTransparency = 1
+	TextLabel.Text = text
+	TextLabel.Font = Enum.Font.Gotham
+	TextLabel.TextSize = 19
+	TextLabel.TextColor3 = Color3.new(1,1,1)
+	TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+	TextLabel.TextWrapped = true
+
+	task.delay(4, function()
+		if Frame then Frame:Destroy() end
+	end)
+end
+
+--// UI (unchanged)
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+ScreenGui.ResetOnSpawn = false
+
+local Main = Instance.new("Frame", ScreenGui)
+Main.Size = UDim2.new(0, 370, 0, 235)
+Main.Position = UDim2.new(0.5, -180, 0.5, -110)
+Main.BackgroundColor3 = Color3.fromRGB(0, 128, 128)
+Main.BorderSizePixel = 0
+Main.Active = true
+Main.Draggable = true
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 12)
+
+local MainGradient = Instance.new("UIGradient", Main)
+MainGradient.Color = ColorSequence.new{
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(255,255,0)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(255,170,0))
+}
+MainGradient.Rotation = 0
+spawn(function()
+	while true do
+		for i = 0, 360, 2 do
+			MainGradient.Rotation = i
+			task.wait(0.03)
+		end
+	end
+end)
+
+local Title = Instance.new("TextLabel", Main)
+Title.Size = UDim2.new(1, 0, 0, 45)
+Title.BackgroundTransparency = 1
+Title.Text = "VanishStudios KeySystem"
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 23
+Title.TextColor3 = Color3.fromRGB(200,30,30)
+
+local KeyBox = Instance.new("TextBox", Main)
+KeyBox.Position = UDim2.new(0.1, 0, 0.4, 0)
+KeyBox.Size = UDim2.new(0.8, 0, 0, 36)
+KeyBox.PlaceholderText = "ENTER KEY"
+KeyBox.Font = Enum.Font.Gotham
+KeyBox.TextSize = 14
+KeyBox.TextColor3 = Color3.new(1,1,1)
+KeyBox.BackgroundColor3 = Color3.fromRGB(28,28,28)
+KeyBox.BorderSizePixel = 0
+Instance.new("UICorner", KeyBox).CornerRadius = UDim.new(0, 8)
+
+local KeyGradient = Instance.new("UIGradient", KeyBox)
+KeyGradient.Color = ColorSequence.new{
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(170,85,255)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(85,170,255))
+}
+KeyGradient.Rotation = 0
+spawn(function()
+	while true do
+		for i = 0, 360, 2 do
+			KeyGradient.Rotation = i
+			task.wait(0.03)
+		end
+	end
+end)
+
+local Button = Instance.new("TextButton", Main)
+Button.Position = UDim2.new(0.1, 0, 0.6, 0)
+Button.Size = UDim2.new(0.8, 0, 0, 40)
+Button.Text = "VERIFY KEY"
+Button.Font = Enum.Font.GothamBold
+Button.TextSize = 15
+Button.TextColor3 = Color3.new(1,1,1)
+Button.BackgroundColor3 = Color3.fromRGB(0,150,0)
+Button.BorderSizePixel = 0
+Instance.new("UICorner", Button).CornerRadius = UDim.new(0, 8)
+
+local Status = Instance.new("TextLabel", Main)
+Status.Position = UDim2.new(0,0,0.85,0)
+Status.Size = UDim2.new(1,0,0,25)
+Status.BackgroundTransparency = 1
+Status.Font = Enum.Font.Gotham
+Status.TextSize = 13
+
+local CopyButton = Instance.new("TextButton", Main)
+CopyButton.Position = UDim2.new(0.1, 0, 0.80, 0)
+CopyButton.Size = UDim2.new(0.8, 0, 0, 35)
+CopyButton.Text = "Get Key"
+CopyButton.Font = Enum.Font.GothamBold
+CopyButton.TextSize = 15
+CopyButton.TextColor3 = Color3.new(1,1,1)
+CopyButton.BackgroundColor3 = Color3.fromRGB(30,90,160)
+CopyButton.BorderSizePixel = 0
+Instance.new("UICorner", CopyButton).CornerRadius = UDim.new(0, 8)
+
+-- Button logic
+Button.MouseButton1Click:Connect(function()
+	if VALID_KEYS[KeyBox.Text] then
+		Status.Text = "✅ Key Accepted"
+		Status.TextColor3 = Color3.fromRGB(80,255,130)
+
+		sendNotification("Vanish Studio KeySystem", "Key Verified Successfully!", true)
+		sendWebhook(KeyBox.Text)
+
+		for i = 1, 100 do
+			print("⚠️ VanishStudios Loading#" .. i)
+			task.wait(0.01)
+		end
+        
+		task.wait(0.8)
+		ScreenGui:Destroy()
+
+		local gameName = placeGameMap[game.PlaceId] or "Universal"
+		if supportedGameScripts[gameName] then
+			supportedGameScripts[gameName]()
+		end
+	else
+		Status.Text = "❌ Invalid Key"
+		Status.TextColor3 = Color3.fromRGB(255,80,80)
+
+		sendNotification("VanishStudios KeySystem", "Invalid Key!", false)
+	end
+end)
+
+CopyButton.MouseButton1Click:Connect(function()
+	if setclipboard then
+		setclipboard("https://loot-link.com/s?ipjkykXk")
+		sendNotification("VanishStudios", "KeySystem Link Copied!", true)
+	else
+		sendNotification("VanishStudios", "Failed to Generate KeySystem Link", false)
+	end
+end)

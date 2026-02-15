@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATOMS Scripts</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Orbitron',sans-serif;
+}
+
+body{
+    height:100vh;
+    background:#020617;
+    overflow:hidden;
+    color:white;
+}
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+
+/* Discord Button */
+.discord-btn{
+    position:fixed;
+    top:20px;
+    right:25px;
+    padding:10px 20px;
+    border:none;
+    border-radius:12px;
+    font-size:14px;
+    cursor:pointer;
+    color:white;
+    background:linear-gradient(135deg,#5865F2,#8b5cf6);
+    box-shadow:0 0 15px rgba(139,92,246,0.5);
+    transition:0.3s;
+    z-index:10;
+}
+
+.discord-btn:hover{
+    transform:scale(1.08);
+    filter:brightness(1.2);
+}
+
+.card{
+    width:90%;
+    max-width:500px;
+    padding:40px 25px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.1);
+    box-shadow:0 0 40px rgba(0,150,255,0.2);
+
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+.title{
+    text-align:center;
+    font-size:30px;
+    margin-bottom:25px;
+}
+
+.script-box{
+    margin-bottom:25px;
+}
+
+.script-box label{
+    display:block;
+    margin-bottom:8px;
+    font-size:14px;
+}
+
+textarea{
+    width:100%;
+    height:90px;
+    padding:10px;
+    border-radius:10px;
+    border:none;
+    resize:none;
+    background:#0f172a;
+    color:#38bdf8;
+    font-size:13px;
+}
+
+.copy-btn{
+    width:100%;
+    margin-top:8px;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    color:white;
+    background:linear-gradient(135deg,#0ea5e9,#3b82f6);
+    transition:0.3s;
+}
+
+.copy-btn:hover{
+    transform:scale(1.05);
+    filter:brightness(1.2);
+}
+</style>
+</head>
+
+<body>
+
+<a href="https://discord.gg/yourlink" target="_blank">
+    <button class="discord-btn">💬 Discord</button>
+</a>
+
+<canvas id="bg"></canvas>
+
+<div class="card">
+
+    <div class="title">VanishStudios (Atoms) Scripts</div>
+
+    <div class="script-box">
+        <label>Atoms Version</label>
+        <textarea id="atomsScript" readonly>
+loadstring(game:HttpGet("https://raw.githubusercontent.com/M1GarandBattleRifle/VanishStudiosScript/refs/heads/main/ApocalypseRising2.lua"))()
+        </textarea>
+        <button class="copy-btn" onclick="copyText('atomsScript')">Copy Script</button>
+    </div>
+
+    <div class="script-box">
+        <label>Normal Version</label>
+        <textarea id="normalScript" readonly>soon
+        </textarea>
+        <button class="copy-btn" onclick="copyText('normalScript')">Copy Script</button>
+    </div>
+
+</div>
+
+<script>
+function copyText(id){
+    const text = document.getElementById(id).value;
+    navigator.clipboard.writeText(text);
+}
+
+/* Background Animation */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.onresize = ()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+};
+
+let atoms=[];
+
+class Atom{
+    constructor(){
+        this.x=Math.random()*canvas.width;
+        this.y=Math.random()*canvas.height;
+        this.r=Math.random()*2+1;
+        this.dx=(Math.random()-0.5)*1.2;
+        this.dy=(Math.random()-0.5)*1.2;
+    }
+
+    move(){
+        this.x+=this.dx;
+        this.y+=this.dy;
+
+        if(this.x<0||this.x>canvas.width) this.dx*=-1;
+        if(this.y<0||this.y>canvas.height) this.dy*=-1;
+    }
+
+    draw(){
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+        ctx.fillStyle="#38bdf8";
+        ctx.fill();
+    }
+}
+
+for(let i=0;i<120;i++){
+    atoms.push(new Atom());
+}
+
+function connect(){
+    for(let i=0;i<atoms.length;i++){
+        for(let j=i+1;j<atoms.length;j++){
+            let dx=atoms[i].x-atoms[j].x;
+            let dy=atoms[i].y-atoms[j].y;
+            let d=Math.sqrt(dx*dx+dy*dy);
+
+            if(d<120){
+                ctx.strokeStyle="rgba(56,189,248,0.15)";
+                ctx.beginPath();
+                ctx.moveTo(atoms[i].x,atoms[i].y);
+                ctx.lineTo(atoms[j].x,atoms[j].y);
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    atoms.forEach(a=>{
+        a.move();
+        a.draw();
+    });
+    connect();
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
